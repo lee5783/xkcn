@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/blurImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <com.thule.xkcn.view.photoview.PhotoView
+        android:id="@+id/mainImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.thule.xkcn.view.progress.ProgressWheel
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        ProgressWheel:barColor="@android:color/holo_blue_dark"
+        ProgressWheel:barLength="30dp"
+        ProgressWheel:barWidth="4dp"
+        ProgressWheel:delayMillis="75"
+        ProgressWheel:rimColor="@android:color/holo_red_light"
+        ProgressWheel:rimWidth="1dp"
+        ProgressWheel:spinSpeed="30dp"
+        ProgressWheel:text="1%"
+        ProgressWheel:textColor="#222222"
+        ProgressWheel:textSize="12sp" />
+</RelativeLayout>
