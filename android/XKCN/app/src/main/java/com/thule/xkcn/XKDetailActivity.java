@@ -94,7 +94,7 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
     {
-        Log.e(">>",">>>>>>>>>>>>>>>>>>> position " + position + " possition offset " + positionOffset+  " pixel " + positionOffsetPixels);
+
     }
 
     @Override
@@ -102,23 +102,25 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
     {
         if(state == ViewPager.SCROLL_STATE_SETTLING)
         {
-            Log.e("","Scroll state SCROLL_STATE_SETTLING" );
+
         }
         else if (state == ViewPager.SCROLL_STATE_DRAGGING)
         {
-            Log.e("","Scroll state SCROLL_STATE_DRAGGING" );
 
         }
         else if(state == ViewPager.SCROLL_STATE_IDLE)
         {
-            Log.e("","Scroll state SCROLL_STATE_IDLE" );
+
         }
     }
 
     @Override
     public void onPageSelected(int position)
     {
-        Log.e("","Select position " + position );
+        if (Math.abs(XKDataManager.shareInstance().allItems().size() - position) < 3)
+        {
+            XKDataManager.shareInstance().loadNewPage();
+        }
     }
 
     @Override
@@ -140,13 +142,13 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
         _showBar = true;
 
         Animation _headerAnimation =  new TranslateAnimation(0, 0, -_headerBar.getHeight(), 0);
-        _headerAnimation.setDuration(500);
+        _headerAnimation.setDuration(250);
         _headerAnimation.setFillAfter(true);
 
         _headerBar.startAnimation(_headerAnimation);
 
         Animation _footerAnimation =  new TranslateAnimation(0, 0, _footerBar.getHeight(), 0);
-        _footerAnimation.setDuration(500);
+        _footerAnimation.setDuration(250);
         _footerAnimation.setFillAfter(true);
 
         _footerAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -201,12 +203,10 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
             public void run() {
                 XKDetailActivity.this.runOnUiThread(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         hideHeaderFooterBar();
                     }
                 });
-                Log.i("Timer", "Hide footer bar");
             }
         }, 3000);
     }
@@ -220,7 +220,14 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
         }
     }
 
-	protected class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter
+    @Override
+    public void onLowMemory() {
+        Log.i("",">>>>>>>>>>>>>>>>>>> ON LOW MEMORY");
+        System.gc();
+        super.onLowMemory();
+    }
+
+    protected class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter
 	{
 
 		int count = 0;
@@ -259,8 +266,6 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
 		@Override
 		public int getItemPosition(Object object)
 		{
-			// TODO Auto-generated method stub
-			//return super.getItemPosition(object);
 			return POSITION_NONE;
 		}
 

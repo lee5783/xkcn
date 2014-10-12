@@ -17,13 +17,16 @@
         android:background="@color/xk_black_tranparent_70"
         android:layout_gravity="bottom">
 
-        <Button
+        <ImageButton
             android:id="@+id/downloadButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:padding="5dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="D" />
+            android:src="@drawable/ico_download"
+            android:scaleType="centerInside"
+            android:background="@drawable/xk_download_btn"/>
     </RelativeLayout>
 
     <RelativeLayout

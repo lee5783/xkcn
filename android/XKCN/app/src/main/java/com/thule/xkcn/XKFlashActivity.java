@@ -45,9 +45,9 @@ public class XKFlashActivity extends Activity
         _background.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         _appName = (TextView) findViewById(R.id.appName);
-        XKFontUtils.setCustomFont(this, _appName, XKFontUtils.FontType.Candy);
+        XKFontUtils.setCustomFont(this, _appName, XKFontUtils.FontType.Lobster);
         _slogan = (TextView) findViewById(R.id.subtileText);
-        XKFontUtils.setCustomFont(this, _slogan, XKFontUtils.FontType.RobotoBold);
+        XKFontUtils.setCustomFont(this, _slogan, XKFontUtils.FontType.RobotoLight);
 //        Bitmap bitmap = getBlurBitmap();
 //
 //        Bitmap blur = XKBlurUtils.blurBitmap(this, bitmap, 0.9f);
@@ -75,8 +75,9 @@ public class XKFlashActivity extends Activity
     void startMainActivity()
     {
         Intent intent = new Intent(this, XKMainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
 

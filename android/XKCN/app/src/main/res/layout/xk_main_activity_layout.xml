@@ -39,6 +39,35 @@
         android:layout_width="match_parent"
         android:background="@color/xk_black_tranparent_70"
         android:layout_height="50dp">
+
+        <ImageButton android:id="@+id/jumpToTopBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ico_up"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/xk_download_btn"/>
+
+        <ImageButton android:id="@+id/refreshBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ico_refresh"
+            android:scaleType="fitCenter"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/xk_download_btn"/>
+
+        <ImageButton android:id="@+id/menuBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ico_menu"
+            android:scaleType="fitCenter"
+            android:layout_centerVertical="true"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/xk_download_btn"/>
+
     </RelativeLayout>
 
 </FrameLayout>

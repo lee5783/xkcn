@@ -3,5 +3,6 @@
 
     <string name="app_name">XKCN</string>
     <string name="app_slogan">Nơi Girl Xinh Hội Tụ</string>
+    <string name="t_loading">Loading...</string>
 
 </resources>

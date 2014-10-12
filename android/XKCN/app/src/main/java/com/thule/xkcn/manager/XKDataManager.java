@@ -53,7 +53,8 @@ public class XKDataManager
 
 	public void loadNewPage()
 	{
-		if (_hashMap.containsKey(Integer.valueOf(currentPage())))
+        int downloadPage = currentPage() + 1;
+		if (_hashMap.containsKey(Integer.valueOf(downloadPage)))
 		{
 			return;
 		}
@@ -65,13 +66,16 @@ public class XKDataManager
 			@Override
 			public void finishDownloadPage(XKPage page)
 			{
-				_pages.add(page.pageIndex, page);
-				_allItems.addAll(page.data);
-
 				if (_hashMap.containsKey(Integer.valueOf(page.pageIndex)))
 				{
 					_hashMap.remove(Integer.valueOf(page.pageIndex));
+                    _pages.add(page.pageIndex, page);
+                    _allItems.addAll(page.data);
 				}
+                else
+                {
+                    //Fail case
+                }
 
 				fireSuccessDownloadPage(page);
 			}
@@ -84,13 +88,17 @@ public class XKDataManager
 				{
 					_hashMap.remove(Integer.valueOf(page));
 				}
+                else
+                {
+                    //Fail case
+                }
 			}
 		});
 
-		_hashMap.put(Integer.valueOf(currentPage()), downloadPageManager);
+		_hashMap.put(Integer.valueOf(downloadPage), downloadPageManager);
 
 		downloadPageManager.execute(new Integer[]
-		{ currentPage() + 1 });
+		{ downloadPage});
 	}
 
 	public void fireSuccessDownloadPage(XKPage page)
@@ -119,6 +127,13 @@ public class XKDataManager
 			_notifiers.remove(notifier);
 		}
 	}
+
+    public void cleanup()
+    {
+        _pages.clear();
+        _allItems.clear();
+        _hashMap.clear();
+    }
 
 	public interface XKDataNotifier
 	{

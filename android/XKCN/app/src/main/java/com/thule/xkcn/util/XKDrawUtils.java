@@ -25,6 +25,10 @@ public class XKDrawUtils {
         {
             Log.i("", "Context is null");
         }
+        if (bitmap.isRecycled())
+        {
+            return null;
+        }
 
         int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
 

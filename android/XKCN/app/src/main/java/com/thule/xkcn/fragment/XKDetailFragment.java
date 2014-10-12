@@ -35,7 +35,7 @@ public class XKDetailFragment extends Fragment {
 
     PhotoView _mainImageView;
     ImageView _blurImageView;
-    View showMenuView;
+    int _position;
     XKItem _item;
     Context _context;
     private DisplayImageOptions options;
@@ -45,17 +45,11 @@ public class XKDetailFragment extends Fragment {
     public XKDetailFragment(Context context, int positison) {
         super();
         _context = context;
+        _position = positison;
         _item = XKDataManager.shareInstance().allItems().get(positison);
-        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.ic_stub)
-                .showImageForEmptyUri(R.drawable.ic_empty).showImageOnFail(R.drawable.ic_error).cacheInMemory(true)
+        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.no_media)
+                .showImageForEmptyUri(R.drawable.no_media).showImageOnFail(R.drawable.download_error).cacheInMemory(true)
                 .cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.ARGB_8888).build();
-    }
-
-
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
     }
 
     @Override
@@ -102,9 +96,12 @@ public class XKDetailFragment extends Fragment {
                 if(_context != null)
                 {
                     Bitmap blur = XKBlurUtils.blurBitmap(_context, bitmap, 0.9f);
-                    if (blur != null) {
+                    if (blur != null)
+                    {
                         _blurImageView.setVisibility(View.VISIBLE);
                         _blurImageView.setImageBitmap(blur);
+                        bitmap.recycle();
+                        bitmap = null;
                     }
                 }
             }
@@ -118,6 +115,21 @@ public class XKDetailFragment extends Fragment {
         _loadData = false;
 
         return v;
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (_mainImageView != null && _mainImageView.getDrawingCache()!=null)
+        {
+            _mainImageView.getDrawingCache().recycle();
+            _mainImageView.setImageBitmap(null);
+        }
+        if (_blurImageView != null && _blurImageView.getDrawingCache()!=null)
+        {
+            _blurImageView.getDrawingCache().recycle();
+            _blurImageView.setImageBitmap(null);
+        }
+        super.onDestroyView();
     }
 
     void loadImage() {
@@ -143,13 +155,15 @@ public class XKDetailFragment extends Fragment {
                     _progressBar.setText("100%");
                     _loadData = true;
 
-                    if (bitmap != null && _context != null);
+                    if (bitmap != null && !bitmap.isRecycled() && _context != null);
                     {
                         Bitmap roundedCornerBitmap = XKDrawUtils.getRoundedCornerBitmap(_context, bitmap);
                         if(roundedCornerBitmap != null)
                         {
                             _mainImageView.setImageBitmap(roundedCornerBitmap);
-                            bitmap.recycle();
+
+                           bitmap.recycle();
+                           bitmap = null;
                         }
                         else
                         {

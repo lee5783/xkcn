@@ -14,15 +14,17 @@ import android.widget.TextView;
 public class XKFontUtils
 {
 	public static final String Font_Candy = "fonts/CANDY.TTF";
-	public static final String Font_Roboto_Regular = "fonts/RobotoCondensed-Bold.ttf";
-    public static final String Font_Roboto_Bold = "fonts/RobotoCondensed-Regular.ttf";
+    public static final String Font_Lobster = "fonts/Lobster 1.4.otf";
+	public static final String Font_Roboto_Regular = "fonts/Roboto-Regular.ttf";
+    public static final String Font_Roboto_Light = "fonts/Roboto-Light.ttf";
 	public static Typeface CandyTypeface;
+    public static Typeface LobsterTypeface;
 	public static Typeface RobotoTypeface;
-    public static Typeface RobotoBoldTypeface;
+    public static Typeface RobotoLightTypeface;
 
 	public enum FontType
 	{
-		Candy, RobotoRegular, RobotoBold
+		Candy, Lobster, RobotoRegular, RobotoLight
 	}
 
 	/**
@@ -38,13 +40,17 @@ public class XKFontUtils
 			{
 				CandyTypeface = Typeface.createFromAsset(_context.getAssets(), Font_Candy);
 			}
+            if (LobsterTypeface == null)
+            {
+                LobsterTypeface = Typeface.createFromAsset(_context.getAssets(), Font_Lobster);
+            }
 			if (RobotoTypeface == null)
 			{
 				RobotoTypeface = Typeface.createFromAsset(_context.getAssets(), Font_Roboto_Regular);
 			}
-            if (RobotoBoldTypeface == null)
+            if (RobotoLightTypeface == null)
             {
-                RobotoBoldTypeface = Typeface.createFromAsset(_context.getAssets(), Font_Roboto_Bold);
+                RobotoLightTypeface = Typeface.createFromAsset(_context.getAssets(), Font_Roboto_Light);
             }
 
 		} catch (Exception ex)
@@ -57,8 +63,10 @@ public class XKFontUtils
 		{
 		case Candy:
 			return CandyTypeface;
-		case RobotoBold:
-			return RobotoBoldTypeface;
+            case Lobster:
+                return LobsterTypeface;
+		case RobotoLight:
+			return RobotoLightTypeface;
 		default:
 			return RobotoTypeface;
 		}
@@ -96,7 +104,25 @@ public class XKFontUtils
 				((RadioButton) obj).setTypeface(tf, Typeface.NORMAL);
 			}
 			break;
-		case RobotoBold:
+        case Lobster:
+                if (obj instanceof TextView)
+                {
+                    ((TextView) obj).setTypeface(tf, Typeface.NORMAL);
+                }
+                else if (obj instanceof EditText)
+                {
+                    ((EditText) obj).setTypeface(tf, Typeface.NORMAL);
+                }
+                else if (obj instanceof Button)
+                {
+                    ((Button) obj).setTypeface(tf, Typeface.NORMAL);
+                }
+                else if (obj instanceof RadioButton)
+                {
+                    ((RadioButton) obj).setTypeface(tf, Typeface.NORMAL);
+                }
+                break;
+		case RobotoLight:
             if (obj instanceof TextView)
             {
                 ((TextView) obj).setTypeface(tf, Typeface.NORMAL);

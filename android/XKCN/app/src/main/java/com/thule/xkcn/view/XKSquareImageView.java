@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -26,6 +27,8 @@ public class XKSquareImageView extends ImageView
 	private int BODER_WIDTH = 3;
 	private Paint _bitmapPaint;
 	private Paint _borderPaint;
+
+    private Bitmap _bitmap;
 
 	public XKSquareImageView(Context context, AttributeSet attrs, int defStyle)
 	{
@@ -73,28 +76,46 @@ public class XKSquareImageView extends ImageView
 		super.onSizeChanged(w, w, oldw, oldh);
 	}
 
-	@SuppressLint("DrawAllocation")
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        _bitmap = null;
+        super.setImageBitmap(bm);
+    }
+
+    @SuppressLint("DrawAllocation")
 	@Override
 	protected void onDraw(Canvas canvas)
 	{
-		Drawable drawable = getDrawable();
-		if (drawable != null && drawable instanceof BitmapDrawable)
-		{
-			Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-			if (bitmap != null)
-			{
-				Bitmap cropBitmap = getCroppedBitmap(bitmap);
+        if(_bitmap==null)
+        {
+            Drawable drawable = getDrawable();
+            if (drawable != null && drawable instanceof BitmapDrawable)
+            {
+                Bitmap origialBitmap = Bitmap.createBitmap(((BitmapDrawable) drawable).getBitmap());
+                if (origialBitmap != null)
+                {
+                    _bitmap = getCroppedBitmap(origialBitmap);
+                    origialBitmap.recycle();
+                    origialBitmap = null;
+                }
+            }
+            else
+            {
+                super.onDraw(canvas);
+            }
+        }
 
-				canvas.drawBitmap(cropBitmap, getMatrix(), _bitmapPaint);
+        if (_bitmap!=null)
+        {
+            canvas.drawBitmap(_bitmap, getMatrix(), _bitmapPaint);
 
-				canvas.drawRoundRect(new RectF(BODER_WIDTH / 2, BODER_WIDTH / 2, getWidth() - BODER_WIDTH / 2, getHeight()
-						- BODER_WIDTH / 2), ROUNDED_RADIUS, ROUNDED_RADIUS, _borderPaint);
-			}
-		}
-		else
-		{
-			super.onDraw(canvas);
-		}
+            canvas.drawRoundRect(new RectF(BODER_WIDTH / 2, BODER_WIDTH / 2, getWidth() - BODER_WIDTH / 2, getHeight()
+                    - BODER_WIDTH / 2), ROUNDED_RADIUS, ROUNDED_RADIUS, _borderPaint);
+        }
+        else
+        {
+            super.onDraw(canvas);
+        }
 	}
 
 	/**

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tj="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,20 +11,31 @@
        android:scaleType="centerCrop"
        android:src="@drawable/background"/>
 
-    <TextView android:id="@+id/appName"
-        android:layout_width="wrap_content"
+    <com.thule.xkcn.view.XKOutlineTextView android:id="@+id/appName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textSize="40sp"
+        android:textSize="60sp"
+        android:textAlignment="center"
+        android:gravity="center"
         android:text="@string/app_name"
-        android:textColor="@android:color/holo_blue_light"/>
+        android:textColor="@color/holo_blue_dark"
+        tj:textStroke="true"
+        tj:textStrokeWidth="10.0"
+        tj:textStrokeColor="@android:color/white"/>
 
-    <TextView android:id="@+id/subtileText"
-        android:layout_width="wrap_content"
+    <com.thule.xkcn.view.XKOutlineTextView android:id="@+id/subtileText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appName"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
-        android:textSize="24sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="18sp"
         android:text="@string/app_slogan"
-        android:textColor="@android:color/holo_blue_light"/>
+        android:textColor="@color/holo_blue_dark"
+        tj:textStroke="true"
+        tj:textStrokeWidth="3.0"
+        tj:textStrokeColor="@android:color/white"/>
 </RelativeLayout>
