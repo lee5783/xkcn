@@ -3,6 +3,7 @@ package com.thule.xkcn.fragment;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -37,6 +38,7 @@ import com.thule.xkcn.manager.XKDataManager;
 import com.thule.xkcn.manager.XKDataManager.XKDataNotifier;
 import com.thule.xkcn.model.XKItem;
 import com.thule.xkcn.model.XKPage;
+import com.thule.xkcn.util.XKDrawUtils;
 import com.thule.xkcn.util.XKUtils;
 import com.thule.xkcn.view.XKGridViewLoadMoreListener;
 
@@ -47,7 +49,6 @@ public class XKGridFragment extends Fragment implements XKDataNotifier, OnItemCl
 	public GridView _gridView;
 
     private RelativeLayout _loadingView;
-	private DisplayImageOptions options;
 	private XKGridItemAdapter _adapter;
 
 	@Override
@@ -80,10 +81,6 @@ public class XKGridFragment extends Fragment implements XKDataNotifier, OnItemCl
             }
 		});
 		_gridView.setOnItemClickListener(this);
-
-        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.no_media)
-                .showImageForEmptyUri(R.drawable.no_media).showImageOnFail(R.drawable.download_error).cacheInMemory(true)
-                .cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.ARGB_8888).build();
 
         _listData = XKDataManager.shareInstance().allItems();
 
@@ -189,7 +186,7 @@ _animation = false;
                 _listData = XKDataManager.shareInstance().allItems();
                 if (_adapter == null)
                 {
-                    _adapter = new XKGridItemAdapter(_listData);
+                    _adapter = new XKGridItemAdapter(getActivity(), _listData);
                     _gridView.setAdapter(_adapter);
                 }
                 else
@@ -222,13 +219,15 @@ _animation = false;
         }
     }
 
-    public class XKGridItemAdapter extends BaseAdapter
+    public static class XKGridItemAdapter extends BaseAdapter
 	{
+        private Context _context;
 		private ArrayList<XKItem> data;
 
-		public XKGridItemAdapter(ArrayList<XKItem> data)
+		public XKGridItemAdapter(Context context, ArrayList<XKItem> data)
 		{
 			this.data = data;
+            _context = context;
 		}
 
 		public void setData(ArrayList<XKItem> listData)
@@ -256,36 +255,34 @@ _animation = false;
 		}
 
 		@Override
-		public View getView(int arg0, View arg1, ViewGroup arg2)
+		public View getView(int position, View view, ViewGroup viewGroup)
 		{
 			ViewHolder holder = null;
-			if (arg1 == null)
+			if (view == null)
 			{
-				arg1 = getActivity().getLayoutInflater().inflate(R.layout.xk_gridview_item_layout, null);
+				view = LayoutInflater.from(_context).inflate(R.layout.xk_gridview_item_layout, null);
 				holder = new ViewHolder();
-				holder.image = (ImageView) arg1.findViewById(R.id.img_image);
+				holder.image = (ImageView) view.findViewById(R.id.img_image);
 				holder.image.setClickable(false);
 				holder.image.setFocusableInTouchMode(false);
-				arg1.setTag(holder);
+				view.setTag(holder);
 			}
 
-			holder = (ViewHolder) arg1.getTag();
+			holder = (ViewHolder) view.getTag();
             if (holder.image!=null && holder.image.getDrawingCache()!=null)
             {
                 holder.image.getDrawingCache().recycle();
                 holder.image.setImageBitmap(null);
             }
 
-			XKItem item = (XKItem) getItem(arg0);
-
-			ImageLoader.getInstance().displayImage(item.dataPhoto250, holder.image, options);
-
-			return arg1;
+			XKItem item = (XKItem) getItem(position);
+			ImageLoader.getInstance().displayImage(item.dataPhoto250, holder.image, XKDrawUtils.defaultImageOption());
+			return view;
 		}
 
 	}
 
-	private class ViewHolder
+	static class ViewHolder
 	{
 		ImageView image;
 	}

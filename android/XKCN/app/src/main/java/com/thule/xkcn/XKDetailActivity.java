@@ -57,7 +57,7 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
         _headerBar = (RelativeLayout)findViewById(R.id.headerBarView);
         _footerBar = (RelativeLayout)findViewById(R.id.footerBarView);
 
-		_adapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+		_adapter = new ScreenSlidePagerAdapter(this, getSupportFragmentManager());
 		_pager.setAdapter(_adapter);
         _pager.setOnPageChangeListener(this);
 
@@ -220,23 +220,17 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
         }
     }
 
-    @Override
-    public void onLowMemory() {
-        Log.i("",">>>>>>>>>>>>>>>>>>> ON LOW MEMORY");
-        System.gc();
-        super.onLowMemory();
-    }
-
-    protected class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter
+    static class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter
 	{
+        private XKDetailActivity detailActivity;
+        int count = 0;
 
-		int count = 0;
-
-		public ScreenSlidePagerAdapter(FragmentManager fm)
-		{
-			super(fm);
-			count = XKDataManager.shareInstance().allItems().size() + 1;
-		}
+        public ScreenSlidePagerAdapter(XKDetailActivity detailActivity, FragmentManager fragmentManager)
+        {
+            super(fragmentManager);
+            this.detailActivity = detailActivity;
+            count = XKDataManager.shareInstance().allItems().size() + 1;
+        }
 
 		public void setItemCount(int count)
 		{
@@ -253,7 +247,12 @@ public class XKDetailActivity extends FragmentActivity implements XKDataNotifier
 			}
 			else
 			{
-				return new XKDetailFragment(XKDetailActivity.this, position);
+//                XKDetailFragment detailFragment = new XKDetailFragment();
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("position", position);
+//                detailFragment.setArguments(bundle);
+//                return  detailFragment;
+				return new XKDetailFragment(detailActivity, position);
 			}
 		}
 

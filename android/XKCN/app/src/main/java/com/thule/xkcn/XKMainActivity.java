@@ -112,13 +112,6 @@ public class XKMainActivity extends FragmentActivity
         _headerBar.startAnimation(animation);
     }
 
-    @Override
-    public void onLowMemory() {
-        System.gc();
-        Log.e(">>", ">>>>>>>>>>>>>>>>>>>>>>>> OnLowMemory");
-        super.onLowMemory();
-    }
-
     long _backPressedTimeStamp;
 
     @Override
@@ -131,7 +124,7 @@ public class XKMainActivity extends FragmentActivity
         }
         else
         {
-            Toast.makeText(this, "Press back again to exit.", 2000).show();
+            Toast.makeText(this, "Press back again to exit.", Toast.LENGTH_SHORT).show();
             _backPressedTimeStamp = System.currentTimeMillis();
         }
     }

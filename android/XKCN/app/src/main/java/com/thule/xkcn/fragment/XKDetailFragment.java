@@ -38,18 +38,27 @@ public class XKDetailFragment extends Fragment {
     int _position;
     XKItem _item;
     Context _context;
-    private DisplayImageOptions options;
     private ProgressWheel _progressBar;
     private boolean _loadData;
 
-    public XKDetailFragment(Context context, int positison) {
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null)
+        {
+            _position = savedInstanceState.getInt("position");
+            _item = XKDataManager.shareInstance().allItems().get(_position);
+            _context = getActivity();
+        }
+    }
+
+
+    public XKDetailFragment(Context context, int position) {
         super();
         _context = context;
-        _position = positison;
-        _item = XKDataManager.shareInstance().allItems().get(positison);
-        options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.no_media)
-                .showImageForEmptyUri(R.drawable.no_media).showImageOnFail(R.drawable.download_error).cacheInMemory(true)
-                .cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.ARGB_8888).build();
+        _position = position;
+        _item = XKDataManager.shareInstance().allItems().get(position);
     }
 
     @Override
@@ -73,7 +82,7 @@ public class XKDetailFragment extends Fragment {
 
         loadImage();
 
-        ImageLoader.getInstance().loadImage(_item.dataPhoto250, options, new ImageLoadingListener() {
+        ImageLoader.getInstance().loadImage(_item.dataPhoto250, XKDrawUtils.defaultImageOption(), new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
 
@@ -134,7 +143,7 @@ public class XKDetailFragment extends Fragment {
 
     void loadImage() {
         if (!_loadData) {
-            ImageLoader.getInstance().loadImage(_item.dataPhotoHighRes, new ImageSize(0,0), options,new ImageLoadingListener() {
+            ImageLoader.getInstance().loadImage(_item.dataPhotoHighRes, new ImageSize(0,0), XKDrawUtils.defaultImageOption(),new ImageLoadingListener() {
 
                 @Override
                 public void onLoadingStarted(String arg0, View arg1) {
@@ -161,7 +170,6 @@ public class XKDetailFragment extends Fragment {
                         if(roundedCornerBitmap != null)
                         {
                             _mainImageView.setImageBitmap(roundedCornerBitmap);
-
                            bitmap.recycle();
                            bitmap = null;
                         }

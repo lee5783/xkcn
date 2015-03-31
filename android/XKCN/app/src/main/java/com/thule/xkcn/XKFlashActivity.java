@@ -53,14 +53,6 @@ public class XKFlashActivity extends Activity
 //        Bitmap blur = XKBlurUtils.blurBitmap(this, bitmap, 0.9f);
 //        _background.setImageBitmap(blur);
 
-        XKDataManager.shareInstance().loadNewPage();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-    startMainActivity();
-            }
-        }, 2000);
-
         //Config image loader
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .threadPriority(Thread.NORM_PRIORITY - 2).denyCacheImageMultipleSizesInMemory()
@@ -70,6 +62,14 @@ public class XKFlashActivity extends Activity
                 .build();
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
+
+        XKDataManager.shareInstance().loadNewPage();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startMainActivity();
+            }
+        }, 2000);
     }
 
     void startMainActivity()

@@ -11,6 +11,10 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.thule.xkcn.R;
+
 /**
  * Created by thule on 10/10/14.
  */
@@ -61,5 +65,13 @@ public class XKDrawUtils {
         canvas.drawRoundRect(rectF, ROUNDED_PIXELS, ROUNDED_PIXELS, borderPaint);
 
         return output;
+    }
+
+    public static DisplayImageOptions defaultImageOption()
+    {
+        DisplayImageOptions options = new DisplayImageOptions.Builder().showImageOnLoading(R.drawable.no_media)
+                .showImageForEmptyUri(R.drawable.no_media).showImageOnFail(R.drawable.download_error).cacheInMemory(true)
+                .cacheOnDisk(true).considerExifParams(true).bitmapConfig(Bitmap.Config.ARGB_8888).build();
+        return options;
     }
 }
